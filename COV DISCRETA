@@ -1,0 +1,245 @@
+<<<<<<< HEAD
+# Cargar librerías necesarias
+library(ggplot2)
+library(dplyr)
+
+# Crear valores posibles para X y Y
+x_vals <- 0:4
+y_vals <- 0:4
+
+# Crear todas las combinaciones posibles
+tabla <- expand.grid(X = x_vals, Y = y_vals)
+
+# Parámetros
+n <- 4
+p <- 0.75
+lambda <- 1.2
+
+# Calcular probabilidades marginales
+tabla$P_X <- dbinom(tabla$X, size = n, prob = p)
+tabla$P_Y <- dpois(tabla$Y, lambda = lambda)
+
+# Calcular probabilidad conjunta
+tabla$P_XY <- tabla$P_X * tabla$P_Y
+
+# Calcular E[X], E[Y]
+E_X <- sum(tabla$X * tabla$P_X)
+E_Y <- sum(tabla$Y * tabla$P_Y)
+
+# Calcular E[XY]
+tabla$XY <- tabla$X * tabla$Y
+E_XY <- sum(tabla$XY * tabla$P_XY)
+
+# Calcular Var(X), Var(Y)
+E_X2 <- sum((tabla$X^2) * tabla$P_X)
+E_Y2 <- sum((tabla$Y^2) * tabla$P_Y)
+Var_X <- E_X2 - E_X^2
+Var_Y <- E_Y2 - E_Y^2
+
+# Calcular desviaciones estándar
+SD_X <- sqrt(Var_X)
+SD_Y <- sqrt(Var_Y)
+
+# Calcular Covarianza y Correlación
+Cov_XY <- E_XY - (E_X * E_Y)
+Rho_XY <- Cov_XY / (SD_X * SD_Y)
+
+# Mostrar resultados
+cat("📊 Resultados estadísticos:\n")
+cat("E[X] =", round(E_X, 4), "\n")
+cat("E[Y] =", round(E_Y, 4), "\n")
+cat("E[XY] =", round(E_XY, 4), "\n")
+cat("Var(X) =", round(Var_X, 4), "\n")
+cat("Var(Y) =", round(Var_Y, 4), "\n")
+cat("Cov(X, Y) =", round(Cov_XY, 4), "\n")
+cat("Correlación (Pearson) =", round(Rho_XY, 4), "\n")
+
+# Gráfico de calor de la distribución conjunta
+ggplot(tabla, aes(x = factor(X), y = factor(Y), fill = P_XY)) +
+  geom_tile(color = "white") +
+  scale_fill_gradient(low = "white", high = "steelblue") +
+  geom_text(aes(label = round(P_XY, 3)), size = 4) +
+  labs(title = "Distribución Conjunta: Negociaciones vs Reclamos",
+       x = "Negociaciones Exitosas (X)",
+       y = "Reclamos Contractuales (Y)",
+       fill = "P(X,Y)") +
+  theme_minimal()
+
+#####################################################
+#####################################################
+# Cargar la librería para graficar
+library(ggplot2)
+
+# Crear tabla conjunta del Ejercicio A
+tabla_A <- matrix(c(0.10, 0.15, 0.05,
+                    0.05, 0.10, 0.20,
+                    0.00, 0.05, 0.30),
+                  nrow = 3, byrow = TRUE)
+
+rownames(tabla_A) <- c("X=0", "X=1", "X=2")
+colnames(tabla_A) <- c("Y=0", "Y=1", "Y=2")
+
+# Crear data frame en formato largo con funciones base
+X_vals <- rep(0:2, each = 3)
+Y_vals <- rep(0:2, times = 3)
+P_vals <- as.vector(tabla_A)
+
+df <- data.frame(
+  X = X_vals,
+  Y = Y_vals,
+  P = P_vals
+)
+
+# Calcular productos para la esperanza
+df$XY <- df$X * df$Y
+
+# Calcular esperanzas
+E_X <- sum(df$X * df$P)
+E_Y <- sum(df$Y * df$P)
+E_XY <- sum(df$XY * df$P)
+
+# Calcular covarianza
+Cov_XY <- E_XY - (E_X * E_Y)
+
+# Mostrar resultados
+cat("📊 Resultados - Ejercicio A:\n")
+cat("E[X] =", round(E_X, 4), "\n")
+cat("E[Y] =", round(E_Y, 4), "\n")
+cat("E[XY] =", round(E_XY, 4), "\n")
+cat("Cov(X,Y) =", round(Cov_XY, 4), "\n")
+
+# Gráfico de calor
+ggplot(df, aes(x = factor(X), y = factor(Y), fill = P)) +
+  geom_tile(color = "white") +
+  geom_text(aes(label = round(P, 3)), size = 4) +
+  scale_fill_gradient(low = "white", high = "steelblue") +
+  labs(
+    title = "Distribución conjunta - Ejercicio A",
+    x = "Exportaciones exitosas (X)",
+    y = "Errores aduaneros (Y)",
+    fill = "P(X,Y)"
+  ) +
+  theme_minimal()
+=======
+# Cargar librerías necesarias
+library(ggplot2)
+library(dplyr)
+
+# Crear valores posibles para X y Y
+x_vals <- 0:4
+y_vals <- 0:4
+
+# Crear todas las combinaciones posibles
+tabla <- expand.grid(X = x_vals, Y = y_vals)
+
+# Parámetros
+n <- 4
+p <- 0.75
+lambda <- 1.2
+
+# Calcular probabilidades marginales
+tabla$P_X <- dbinom(tabla$X, size = n, prob = p)
+tabla$P_Y <- dpois(tabla$Y, lambda = lambda)
+
+# Calcular probabilidad conjunta
+tabla$P_XY <- tabla$P_X * tabla$P_Y
+
+# Calcular E[X], E[Y]
+E_X <- sum(tabla$X * tabla$P_X)
+E_Y <- sum(tabla$Y * tabla$P_Y)
+
+# Calcular E[XY]
+tabla$XY <- tabla$X * tabla$Y
+E_XY <- sum(tabla$XY * tabla$P_XY)
+
+# Calcular Var(X), Var(Y)
+E_X2 <- sum((tabla$X^2) * tabla$P_X)
+E_Y2 <- sum((tabla$Y^2) * tabla$P_Y)
+Var_X <- E_X2 - E_X^2
+Var_Y <- E_Y2 - E_Y^2
+
+# Calcular desviaciones estándar
+SD_X <- sqrt(Var_X)
+SD_Y <- sqrt(Var_Y)
+
+# Calcular Covarianza y Correlación
+Cov_XY <- E_XY - (E_X * E_Y)
+Rho_XY <- Cov_XY / (SD_X * SD_Y)
+
+# Mostrar resultados
+cat("📊 Resultados estadísticos:\n")
+cat("E[X] =", round(E_X, 4), "\n")
+cat("E[Y] =", round(E_Y, 4), "\n")
+cat("E[XY] =", round(E_XY, 4), "\n")
+cat("Var(X) =", round(Var_X, 4), "\n")
+cat("Var(Y) =", round(Var_Y, 4), "\n")
+cat("Cov(X, Y) =", round(Cov_XY, 4), "\n")
+cat("Correlación (Pearson) =", round(Rho_XY, 4), "\n")
+
+# Gráfico de calor de la distribución conjunta
+ggplot(tabla, aes(x = factor(X), y = factor(Y), fill = P_XY)) +
+  geom_tile(color = "white") +
+  scale_fill_gradient(low = "white", high = "steelblue") +
+  geom_text(aes(label = round(P_XY, 3)), size = 4) +
+  labs(title = "Distribución Conjunta: Negociaciones vs Reclamos",
+       x = "Negociaciones Exitosas (X)",
+       y = "Reclamos Contractuales (Y)",
+       fill = "P(X,Y)") +
+  theme_minimal()
+
+#####################################################
+#####################################################
+# Cargar la librería para graficar
+library(ggplot2)
+
+# Crear tabla conjunta del Ejercicio A
+tabla_A <- matrix(c(0.10, 0.15, 0.05,
+                    0.05, 0.10, 0.20,
+                    0.00, 0.05, 0.30),
+                  nrow = 3, byrow = TRUE)
+
+rownames(tabla_A) <- c("X=0", "X=1", "X=2")
+colnames(tabla_A) <- c("Y=0", "Y=1", "Y=2")
+
+# Crear data frame en formato largo con funciones base
+X_vals <- rep(0:2, each = 3)
+Y_vals <- rep(0:2, times = 3)
+P_vals <- as.vector(tabla_A)
+
+df <- data.frame(
+  X = X_vals,
+  Y = Y_vals,
+  P = P_vals
+)
+
+# Calcular productos para la esperanza
+df$XY <- df$X * df$Y
+
+# Calcular esperanzas
+E_X <- sum(df$X * df$P)
+E_Y <- sum(df$Y * df$P)
+E_XY <- sum(df$XY * df$P)
+
+# Calcular covarianza
+Cov_XY <- E_XY - (E_X * E_Y)
+
+# Mostrar resultados
+cat("📊 Resultados - Ejercicio A:\n")
+cat("E[X] =", round(E_X, 4), "\n")
+cat("E[Y] =", round(E_Y, 4), "\n")
+cat("E[XY] =", round(E_XY, 4), "\n")
+cat("Cov(X,Y) =", round(Cov_XY, 4), "\n")
+
+# Gráfico de calor
+ggplot(df, aes(x = factor(X), y = factor(Y), fill = P)) +
+  geom_tile(color = "white") +
+  geom_text(aes(label = round(P, 3)), size = 4) +
+  scale_fill_gradient(low = "white", high = "steelblue") +
+  labs(
+    title = "Distribución conjunta - Ejercicio A",
+    x = "Exportaciones exitosas (X)",
+    y = "Errores aduaneros (Y)",
+    fill = "P(X,Y)"
+  ) +
+  theme_minimal()
+>>>>>>> 819d41548f5609f295a70b75a14c62a8d697d71b
