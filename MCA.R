@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Instalar paquetes si no están ya instalados
 install.packages("FactoMineR")
 install.packages("factoextra")
@@ -59,4 +58,3 @@ fviz_contrib(acm_result, choice = "var", axes = 1, top = 10)  # Eje 1
 fviz_contrib(acm_result, choice = "var", axes = 2, top = 10)  # Eje 2
 
 
->>>>>>> 819d41548f5609f295a70b75a14c62a8d697d71b
