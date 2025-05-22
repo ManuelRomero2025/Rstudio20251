@@ -1,0 +1,145 @@
+
+---
+title: "Dashboard Interactivo de Ventas por Variable"
+output:
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+    theme: cosmo
+runtime: shiny
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(shiny)
+library(dplyr)
+library(ggplot2)
+library(DT)
+
+# Simular base de datos
+set.seed(123)
+data <- data.frame(
+  Región = sample(c("Norte", "Sur", "Este", "Oeste"), 300, replace = TRUE),
+  Categoría = sample(c("Electrónica", "Ropa", "Hogar", "Alimentos"), 300, replace = TRUE),
+  Año = sample(2021:2024, 300, replace = TRUE),
+  Ventas = runif(300, 1000, 10000),
+  Precio = runif(300, 10, 500),
+  Unidades = sample(1:50, 300, replace = TRUE)
+)
+```
+
+# Página 1
+## Filtros {.sidebar}
+
+```{r}
+selectInput("region", "Región:", choices = c("Todas", unique(data$Región)), selected = "Todas")
+selectInput("categoria", "Categoría:", choices = c("Todas", unique(data$Categoría)), selected = "Todas")
+sliderInput("anio", "Año:", min = 2021, max = 2024, value = c(2021, 2024), step = 1)
+```
+
+## Visualización
+
+### Ventas vs Precio
+
+```{r}
+renderPlot({
+  df <- data %>%
+    filter((Región == input$region | input$region == "Todas"),
+           (Categoría == input$categoria | input$categoria == "Todas"),
+           Año >= input$anio[1], Año <= input$anio[2])
+
+  ggplot(df, aes(x = Precio, y = Ventas)) +
+    geom_point(color = "#1f77b4", size = 2, alpha = 0.7) +
+    labs(title = "Relación entre Precio y Ventas", x = "Precio", y = "Ventas")
+})
+```
+
+### Histograma de Ventas
+
+```{r}
+renderPlot({
+  df <- data %>%
+    filter((Región == input$region | input$region == "Todas"),
+           (Categoría == input$categoria | input$categoria == "Todas"),
+           Año >= input$anio[1], Año <= input$anio[2])
+
+  ggplot(df, aes(x = Ventas)) +
+    geom_histogram(fill = "#2ca02c", bins = 15, color = "white") +
+    labs(title = "Distribución de Ventas", x = "Ventas", y = "Frecuencia")
+})
+```
+
+# Página 2
+## Visualización Avanzada
+
+### Boxplot por Categoría
+
+```{r}
+renderPlot({
+  df <- data %>%
+    filter((Región == input$region | input$region == "Todas"),
+           Año >= input$anio[1], Año <= input$anio[2])
+
+  ggplot(df, aes(x = Categoría, y = Precio, fill = Categoría)) +
+    geom_boxplot() +
+    labs(title = "Boxplot de Precio por Categoría", x = "", y = "Precio") +
+    theme(legend.position = "none")
+})
+```
+
+### Total de Unidades por Año
+
+```{r}
+renderPlot({
+  df <- data %>%
+    filter((Región == input$region | input$region == "Todas"),
+           (Categoría == input$categoria | input$categoria == "Todas"),
+           Año >= input$anio[1], Año <= input$anio[2]) %>%
+    group_by(Año) %>%
+    summarise(Unidades = sum(Unidades))
+
+  ggplot(df, aes(x = factor(Año), y = Unidades)) +
+    geom_col(fill = "#ff7f0e") +
+    labs(title = "Total de Unidades por Año", x = "Año", y = "Unidades")
+})
+```
+
+# Página 3
+## Análisis Estadístico
+
+### Selección de variable y agrupación
+
+```{r}
+selectInput("var_cuant", "Variable Cuantitativa:",
+            choices = c("Ventas", "Precio", "Unidades"),
+            selected = "Ventas")
+
+selectInput("var_cual", "Variable Cualitativa para Agrupar:",
+            choices = c("Región", "Categoría", "Año"),
+            selected = "Categoría")
+```
+
+### Tabla de Estadísticas por Nivel
+
+```{r}
+renderTable({
+  df <- data %>%
+    filter((Región == input$region | input$region == "Todas"),
+           (Categoría == input$categoria | input$categoria == "Todas"),
+           Año >= input$anio[1], Año <= input$anio[2])
+
+  var_cual <- sym(input$var_cual)
+  var_cuant <- sym(input$var_cuant)
+
+  df %>%
+    group_by(!!var_cual) %>%
+    summarise(
+      Media = round(mean(!!var_cuant), 2),
+      Mediana = round(median(!!var_cuant), 2),
+      Min = round(min(!!var_cuant), 2),
+      Max = round(max(!!var_cuant), 2),
+      SD = round(sd(!!var_cuant), 2),
+      Total = n()
+    )
+})
+```
