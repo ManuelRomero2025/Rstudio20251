@@ -1,0 +1,15 @@
+---
+title: "Reporte de Prueba Z sobre la Edad de los Pacientes con Riesgo de Diabetes"
+author: "Manuel Francisco Romero Ospina"
+date: "2025-05-26"
+output: html_document
+---
+R Markdown es una herramienta de código abierto que permite combinar texto formateado (en estilo Markdown) con código ejecutable (especialmente de R, aunque soporta otros lenguajes) para generar documentos dinámicos y reproducibles. En un solo archivo .Rmd puedes escribir explicación narrativa, incluir fragmentos de código R y mostrar directamente los resultados de ese código (tablas, gráficos, etc.). Esto facilita la creación de informes de análisis de datos reproducibles, donde los resultados siempre corresponden al código mostrado, evitando copias y pegados manuales. Por ejemplo, con R Markdown es posible elaborar informes, presentaciones, dashboards, aplicaciones interactivas, libros, sitios web y artículos académicos, todo a partir de la combinación de Markdown y R
+amazon.com
+. En el contexto de la ciencia de datos, R Markdown se ha vuelto popular para documentar análisis estadísticos, generar reportes para tomadores de decisiones, y compartir visualizaciones de datos de forma transparente. ¿Por qué usar R Markdown en proyectos de datos? Principalmente por la reproducibilidad y la integración de código y resultados. Al mantener código y narrativa juntos, se minimizan errores y se facilita que otros (o tu “yo” futuro) entiendan el proceso analítico completo. Además, R Markdown permite actualizar informes fácilmente: si cambian los datos o parámetros, con solo volver a compilar el documento (lo que en RStudio se conoce como "Knitear") se regeneran todas las tablas y gráficos actualizados automáticamente. Esto ahorra tiempo y reduce errores en comparación con documentos ofimáticos tradicionales. Otra gran ventaja es la flexibilidad en formatos de salida. Un mismo archivo R Markdown puede convertirse en múltiples formatos: HTML (páginas web), PDF, Word, presentaciones de diapositivas, etc. Por ejemplo, puedes crear desde un sencillo informe HTML hasta una presentación tipo slides o incluso un sitio web completo usando R Markdown
+es.r4ds.hadley.nz
+es.r4ds.hadley.nz
+. Para propósitos de visualización de datos interactiva, el formato más usado es HTML, ya que permite integrar gráficos interactivos, animaciones y componentes web. R Markdown soporta además notebooks interactivos (mostrando código y resultado intercalados, útiles para colaboración)
+es.r4ds.hadley.nz
+es.r4ds.hadley.nz
+. En resumen, R Markdown aporta un entorno único para documentar, reproducir y comunicar análisis de datos de forma profesional.
